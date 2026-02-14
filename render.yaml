@@ -1,0 +1,29 @@
+# Render Blueprint (opcional) - Despliegue automático
+# En Render: New -> Blueprint - conectar repo y seleccionar este archivo
+
+services:
+  - type: web
+    name: ecommerce-eval
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ecommerce-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      # Poner la URL final del servicio, ej: https://ecommerce-eval-xxxx.onrender.com
+      - key: FRONTEND_URL
+        sync: false
+
+databases:
+  - name: ecommerce-db
+    plan: free
